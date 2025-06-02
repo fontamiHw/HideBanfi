@@ -30,7 +30,8 @@ RUN mkdir -p ${TMP_RESOURCE_PATH}
 
 # Install any needed packages specified in requirements.txt
 # If you don't have any additional packages, you can skip this step
-RUN pip install --no-cache-dir  matplotlib>=3.10.3 pyaml>=25.5.0
+RUN pip install --no-cache-dir  --force-reinstall -v matplotlib>=3.10.3 pyaml>=25.5.0
+RUN pip install --no-cache-dir --force-reinstall -v webex-bot[proxy]==0.5.2 webexteamssdk==1.6.1 
 
 # Copy project files
 # Copy the current directory contents into the container at /app

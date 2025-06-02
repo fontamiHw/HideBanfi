@@ -7,4 +7,6 @@ requires-python = ">=3.11"
 dependencies = [
     "matplotlib>=3.10.3",
     "pyaml>=25.5.0",
+    "webex-bot[proxy]==0.5.2",
+    "webexteamssdk==1.6.1",
 ]
