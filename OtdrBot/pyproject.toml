@@ -5,6 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
+    "flask>=3.1.1",
     "matplotlib>=3.10.3",
     "pyaml>=25.5.0",
     "webex-bot[proxy]==0.5.2",

@@ -1,41 +1,31 @@
 from webex_bot.models.command import Command
-from webexteamssdk.models.cards import (Colors, TextBlock, FontWeight, FontSize, Column, AdaptiveCard, ColumnSet, \
-    Image, HorizontalAlignment)
-from webex_bot.formatting import quote_danger, quote_info
+from webex_bot.formatting import quote_info
+from webexteamssdk import WebexTeamsAPI
 import logging, time
-from webex_bot.models.response import response_from_adaptive_card
+import threading
 
 class CommandImage(Command):
 
-    def __init__(self):
+    def __init__(self, api: WebexTeamsAPI):
         command = "sor"
         super().__init__(
             command_keyword=command,
             help_message=f"{command}: Return the plot image of the giving SOR file.",
-            #chained_commands=[ImageCb()]
         )
+        self.api = api
     
     def execute(self, message, attachment_actions, activity):    
-        image = Image(url="/data/Docker/CiscoBanfi/JPG/Mik_Node-S-D01-RX-20250528-075531.jpg")
-        text1 = TextBlock("Working on it....", weight=FontWeight.BOLDER, wrap=True, size=FontSize.DEFAULT,
-                          horizontalAlignment=HorizontalAlignment.CENTER, color=Colors.DARK)
-        text2 = TextBlock("I am busy working on your request. Please continue to look busy while I do your work.",
-                          wrap=True, color=Colors.DARK)
-        card = AdaptiveCard(
-            body=[ColumnSet(columns=[Column(items=[image], width=2)]),
-                  ColumnSet(columns=[Column(items=[text1, text2])]),
-                  ])
+        logging.info(f"message: {message}")
+        logging.info(f"activity: {activity}")
+        self.thread = threading.Thread(target=self.run)
+        self.stop_event = threading.Event()
+        self.thread.start()
+        return quote_info("Processing SOR")
 
-        return response_from_adaptive_card(card)
+    def run(self):
+        time.sleep(2)         
+        self.api.messages.create(roomId="Y2lzY29zcGFyazovL3VzL1JPT00vYjY5YTBjNTAtM2ZhOC0xMWYwLWI3ZDYtNWQxN2I3MjY1NjFi",
+                                  files=['/data/Docker/CiscoBanfi/JPG/Mik_Node-S-D01-TX-20250528-091512.jpg'])      
 
 
-class ImageCb(Command):
-
-    def __init__(self):
-        super().__init__(
-            card_callback_keyword="echo_callback",
-            delete_previous_message=True)
-
-    def execute(self, message, attachment_actions, activity):
-        return quote_info(attachment_actions.inputs.get("message_typed"))
 

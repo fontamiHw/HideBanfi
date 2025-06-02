@@ -38,7 +38,7 @@ class BanfiBot (object):
 
         
     def add_commands(self):
-        self.bot.add_command(CommandImage())
+        self.bot.add_command(CommandImage(self.api))
    
 
     def main_loop(self, watch_dir:str):
