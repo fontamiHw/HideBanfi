@@ -7,6 +7,9 @@ import logging
 
 class PlotSor (object):
 
+    def __init__(self):
+        logging.info("init PlotSor")
+
     def create_image_of(self, filename:str):
         data = {}
         file_sor = os.environ.get('APP_SOR_FILES') + "/" + filename
