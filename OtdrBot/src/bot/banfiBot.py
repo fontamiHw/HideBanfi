@@ -6,31 +6,40 @@ from plot.plotSor  import  PlotSor
 from config.config import Config
 from webex_bot.webex_bot import WebexBot
 from webexteamssdk import WebexTeamsAPI
+from webex.commands import CommandImage
 
 class BanfiBot (object):
     def __init__(self):
         logging.info("init BanfiBot")
         self.plotSor = PlotSor()
         self.config = Config()
+        self.api = WebexTeamsAPI(access_token=self.config.get_token())           
+        self.bot = WebexBot(teams_bot_token=self.config.get_token(),
+                   #approved_domains=['cisco.com'],
+                   approved_rooms=['b69a0c50-3fa8-11f0-b7d6-5d17b726561b'],
+                   bot_name=self.config.get_name(),
+                   include_demo_commands=True,
+                   proxies=self.config.get_proxies())
 
     def start(self):
-        self.init_bot()
         # Get directory from environment variable
+
+        rooms = self.api.rooms.list()
+        for u in rooms:
+            ids = u.title
+            logging.info(f'Bot has in in rooms: {u}')
         watch_dir = os.environ.get('APP_SOR_FILES')
         if not watch_dir:
             logging.info("Environment variable APP_SOR_FILES is not set.")
             exit(1)
         else :
+            self.add_commands()
             self.main_loop(watch_dir)
 
-    def init_bot(self):
-        self.api = WebexTeamsAPI(access_token=self.config.get_token())           
-        self. bot = WebexBot(teams_bot_token=self.config.get_token(),
-                   #approved_domains=['cisco.com'],
-                   bot_name=self.config.get_name(),
-                   include_demo_commands=True,
-                   proxies=self.config.get_proxies())
         
+    def add_commands(self):
+        self.bot.add_command(CommandImage())
+   
 
     def main_loop(self, watch_dir:str):
         try:
