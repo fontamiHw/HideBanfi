@@ -11,7 +11,7 @@ from webex.commands import CommandImage
 class BanfiBot (object):
     def __init__(self):
         logging.info("init BanfiBot")
-        self.plotSor = PlotSor()
+        
         self.config = Config()
         self.api = WebexTeamsAPI(access_token=self.config.get_token())           
         self.bot = WebexBot(teams_bot_token=self.config.get_token(),
@@ -38,7 +38,7 @@ class BanfiBot (object):
 
         
     def add_commands(self):
-        self.bot.add_command(CommandImage(self.api))
+        self.bot.add_command(CommandImage(self.api, PlotSor()))
    
 
     def main_loop(self, watch_dir:str):

@@ -52,4 +52,5 @@ class PlotSor (object):
         logging.info(manager.canvas.get_width_height())
         # Show the plot
         #plt.show() 
+        return file_jpg
 
