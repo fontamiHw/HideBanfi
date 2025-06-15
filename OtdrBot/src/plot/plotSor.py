@@ -13,7 +13,7 @@ class PlotSor (object):
     def create_image_of(self, filename:str):
         data = {}
         file_sor = os.environ.get('APP_SOR_FILES') + "/" + filename
-        file_jpg = os.environ.get('APP_JPG_FILES') + "/" + filename.replace(".json", ".jpg")
+        file_jpg = os.environ.get('APP_JPG_FILES') + "/" + filename.replace(".json", ".svg")
         logging.info(f"converting {file_sor} into {file_jpg}")
         # Load data from JSON file
         with open(file_sor, 'r') as f:
@@ -41,14 +41,14 @@ class PlotSor (object):
                 plt.annotate(ml, (frequencies[i], powers[i]))
 
         # Save the plot as a JPEG file
-        plt.savefig(file_jpg, format='jpeg')
+        plt.savefig(file_jpg, format='svg')
         # Set the size of the plot
         plt.gcf().set_size_inches(10, 6)
         # Set the size of the window
         manager = plt.get_current_fig_manager()
         logging.info(manager.canvas.get_width_height())
         #manager.window.state('zoomed')
-        manager.resize(1000, 200)
+        manager.resize(1920, 1080)
         logging.info(manager.canvas.get_width_height())
         # Show the plot
         #plt.show() 
